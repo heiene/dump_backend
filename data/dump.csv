@@ -1,5 +1,5 @@
 ﻿customer_name,order_ref,product_group,process_step,circuit_id,reg_date,plan_done_date,clean_order_date,agreed_date,agreed_installation_date,FM_date,finalize_access_date,latest_agreed_date,order_counter
-DUSJHJØRNET AS,350774_lsd,Internet,finalize access,32674487,24.08.2015,,,11.11.2015,02.11.2015,,,11.11.2015,1
+DUSJ,350774_lsd,Internet,finalize access,32674487,24.08.2015,,,11.11.2015,02.11.2015,,,11.11.2015,1
 LUX NORGE AS,5502484_lsd,Internet,finalize access,32658189,04.01.2016,,,29.01.2016,20.01.2016,,,29.01.2016,1
 FOLLESTAD TREND AS,368544_lsd,Internet,finalize access,63413677,20.01.2016,,,02.03.2016,22.02.2016,,,02.03.2016,1
 De 3 stuer AS,369484_lsd,Internet,finalize access,63495096,01.02.2016,,04.02.2016,02.03.2016,02.06.2016,,,13.06.2016,1
@@ -19,7 +19,7 @@ WALHALLA FRAKT AS,404074_lsd,Internet,plan & design,32744493,18.05.2016,,,10.06.
 INGENIØRFIRMA TPS AS,404080_lsd,Internet,plan & design,,18.05.2016,,,,,,,,1
 Norsk Luthersk Misjonssamband,5503910_lsd,Internet,finalize access,63495849,18.05.2016,,,15.06.2016,06.06.2016,,,15.06.2016,1
 Norsk Luthersk Misjonssamband,5503914_lsd,Internet,complete order,32744591,18.05.2016,24.05.2016,24.05.2016,08.06.2016,30.05.2016,,,08.06.2016,1
-DGC Systems Access,5503961_lsd,Ethernet,plan & design,63494505,20.05.2016,,24.05.2016,27.06.2016,16.06.2016,,,27.06.2016,1
+DUSJ,5503961_lsd,Ethernet,plan & design,63494505,20.05.2016,,24.05.2016,27.06.2016,16.06.2016,,,27.06.2016,1
 FOLLESTAD TREND AS,404337_lsd,Internet,finalize access,63495095,23.05.2016,,,15.06.2016,06.06.2016,,,15.06.2016,1
 HERIGSTAD MEK AS,404380_lsd,Internet,plan & design,,23.05.2016,,,,,,,,1
 PERFECT BILVASK & BILPLEIE AS,5503978_lsd,Internet,finalize access,32744219,23.05.2016,,24.05.2016,17.06.2016,08.06.2016,,,17.06.2016,1
