@@ -31,9 +31,15 @@ setInterval(refreshData, 5000);
 
 var restApi = express();
 
+restApi.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 restApi.get('/customer/:id', function(req,res){
     db.find(
-        {customer_name: req.params.id},
+        {customer_id: req.params.id},
         function(err, docs){
             res.status(200).send(docs);
             console.log(docs);
@@ -41,6 +47,7 @@ restApi.get('/customer/:id', function(req,res){
 });
 
 restApi.get('/order/:id', function(req,res){
+
     db.find(
         {order_ref: req.params.id},
         function(err, docs){
@@ -49,7 +56,7 @@ restApi.get('/order/:id', function(req,res){
         })
 });
 
-restApi.get('/product/:id', function(req,res){
+/*restApi.get('/product/:id', function(req,res){
     db.find(
         {product_group: req.params.id},
         function(err, docs){
@@ -57,9 +64,9 @@ restApi.get('/product/:id', function(req,res){
             console.log(docs);
         })
 });
+*/
+restApi.listen(8585);
 
-restApi.listen(3000);
-
-console.log('Server running at http://localhost:3000/');
+console.log('Server running at http://localhost:8585/');
 
 loadData();
