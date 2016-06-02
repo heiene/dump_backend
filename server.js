@@ -56,6 +56,17 @@ restApi.get('/order/:id', function(req,res){
         })
 });
 
+
+restApi.get('/', function(req,res){
+
+    db.findOne(
+        {},
+        function(err, docs){
+            res.status(200).send(docs.last_update_timestamp);
+            console.log(docs.last_update_timestamp);
+        })
+});
+
 /*restApi.get('/product/:id', function(req,res){
     db.find(
         {product_group: req.params.id},
