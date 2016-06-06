@@ -5,6 +5,8 @@ var csv     = require('csv-parser');
 var Datastore = require('nedb')
     , db = new Datastore();
 
+var port = 8081;
+
 var refreshData = function() {
 
     console.log("Dropper database og kjører opp ny");
@@ -27,7 +29,7 @@ var loadData = function() {
         });
 };
 
-setInterval(refreshData, 5000);
+setInterval(refreshData, 3600000); //refreshing every hour
 
 var restApi = express();
 
@@ -62,22 +64,13 @@ restApi.get('/', function(req,res){
     db.findOne(
         {},
         function(err, docs){
-            res.status(200).send(docs.last_update_timestamp);
-            console.log(docs.last_update_timestamp);
-        })
-});
-
-/*restApi.get('/product/:id', function(req,res){
-    db.find(
-        {product_group: req.params.id},
-        function(err, docs){
             res.status(200).send(docs);
             console.log(docs);
         })
 });
-*/
-restApi.listen(8585);
 
-console.log('Server running at http://localhost:8585/');
+restApi.listen(port);
+
+console.log('Server running at http://localhost:'+port+'/');
 
 loadData();
