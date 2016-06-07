@@ -29,7 +29,8 @@ var loadData = function() {
         });
 };
 
-setInterval(refreshData, 3600000); //refreshing every hour
+setInterval(refreshData, 5000); //refreshing every 5 sec
+//setInterval(refreshData, 3600000); //refreshing every hour
 
 var restApi = express();
 
