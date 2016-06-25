@@ -1,6 +1,14 @@
-var express = require('express');
-var fs      = require('fs');
-var csv     = require('csv-parser');
+var express     = require('express');
+var fs          = require('fs');
+var csv         = require('csv-parser');
+var jwt         = require('jwt-simple');
+
+var inputFile   = './data/input/qlikinput.csv';
+var outputFile  = './data/output/qlikoutput.csv';
+var outputWrite = null;
+
+var secret      = 'qlikSecretBroadnet';
+
 
 var Datastore = require('nedb')
     , db = new Datastore();
@@ -22,11 +30,58 @@ var refreshData = function() {
 };
 
 var loadData = function() {
-    fs.createReadStream('./data/dump.csv')
+    var fileOut = fs.createWriteStream(outputFile);
+    var fileIn  = fs.createReadStream(inputFile);
+
+    fileIn
         .pipe(csv())
         .on('data', function(data) {
+            var encrypted = null;
             db.insert(data);
+            console.log("data som settes inn",data);
+            encrypted = {
+                customer_id: data.customer_id,
+                cust_id_encrypted: jwt.encode({
+                    customer_id: data.customer_id
+                }, secret)
+            };
+            var stringToWrite = data.customer_id+', '+ jwt.encode({
+                    customer_id: data.customer_id
+                }, secret)+ '\n';
+
+            fileOut.write(stringToWrite);
+            console.log('string to write', stringToWrite);
+            console.log('encrypt', jwt.encode({
+                customer_id: data.customer_id
+            }, secret))
+            //writeToFile(encrypted)
         });
+    //fileOut.end();
+    fileIn.on('open', function(){
+        console.log('fileIn is open');
+    });
+
+
+    fileIn.on('close', function(){
+        console.log('fileIn is closed');
+        fileOut.close();
+    });
+
+    fileOut.on('open', function(){
+        console.log('fileOut is open');
+    });
+
+
+    fileOut.on('close', function(){
+        console.log('fileOut is closed');
+    });
+
+};
+
+// Writing data to file
+var writeToFile = function(encryptedData) {
+    console.log('encrypted data', encryptedData)
+    console.log('decrypted', jwt.decode(encryptedData.cust_id_encrypted, secret));
 };
 
 setInterval(refreshData, 5000); //refreshing every 5 sec
