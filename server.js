@@ -5,10 +5,7 @@ var jwt         = require('jwt-simple');
 
 var inputFile   = './data/input/qlikinput.csv';
 var outputFile  = './data/output/qlikoutput.csv';
-var outputWrite = null;
-
 var secret      = 'qlikSecretBroadnet';
-
 
 var Datastore = require('nedb')
     , db = new Datastore();
@@ -16,9 +13,7 @@ var Datastore = require('nedb')
 var port = 8081;
 
 var refreshData = function() {
-
     console.log("Dropper database og kjører opp ny");
-
     db.remove({}, { multi: true }, function (err, numRemoved) {
         if(err) {
             console.log('Error i refreshData', error);
@@ -33,6 +28,13 @@ var loadData = function() {
     var fileOut = fs.createWriteStream(outputFile);
     var fileIn  = fs.createReadStream(inputFile);
 
+    // Write header for CSV out
+    fileOut.write(
+        'customer_id,customer_id_encrypted,order_ref,order_ref_encrypted,salesperson_id,salesperson_id_encrypted\n'
+    );
+
+
+
     fileIn
         .pipe(csv())
         .on('data', function(data) {
@@ -45,15 +47,13 @@ var loadData = function() {
                     customer_id: data.customer_id
                 }, secret)
             };
-            var stringToWrite = data.customer_id+', '+ jwt.encode({
-                    customer_id: data.customer_id
-                }, secret)+ '\n';
+            var stringToWrite =
+                data.customer_id+','+ new Buffer(jwt.encode({customer_id: data.customer_id}, secret)).toString('base64')+','+
+                data.order_ref+','+ new Buffer(jwt.encode({order_ref: data.order_ref}, secret)).toString('base64')+','+
+                data.salesperson_id+','+ new Buffer(jwt.encode({salesperson_id: data.salesperson_id}, secret)).toString('base64')+'\n';
 
             fileOut.write(stringToWrite);
             console.log('string to write', stringToWrite);
-            console.log('encrypt', jwt.encode({
-                customer_id: data.customer_id
-            }, secret))
             //writeToFile(encrypted)
         });
     //fileOut.end();
@@ -76,12 +76,6 @@ var loadData = function() {
         console.log('fileOut is closed');
     });
 
-};
-
-// Writing data to file
-var writeToFile = function(encryptedData) {
-    console.log('encrypted data', encryptedData)
-    console.log('decrypted', jwt.decode(encryptedData.cust_id_encrypted, secret));
 };
 
 setInterval(refreshData, 5000); //refreshing every 5 sec
@@ -124,6 +118,19 @@ restApi.get('/', function(req,res){
             console.log(docs);
         })
 });
+
+restApi.get('/encrypt/:token', function(req,res){
+    var token_temp = new Buffer(req.params.token, 'base64').toString('ascii');
+    var token = jwt.decode(token_temp, secret);
+    console.log(token, token_temp, 'tokesn in yeayeah');
+    db.find(
+        token,
+        function(err, docs){
+            res.status(200).send(docs);
+            console.log(docs);
+        })
+});
+
 
 restApi.listen(port);
 
